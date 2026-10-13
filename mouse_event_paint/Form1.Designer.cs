@@ -237,19 +237,21 @@
             // customizeToolStripMenuItem
             // 
             customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            customizeToolStripMenuItem.Size = new Size(224, 26);
-            customizeToolStripMenuItem.Text = "&Customize";
+            customizeToolStripMenuItem.Size = new Size(206, 26);
+            customizeToolStripMenuItem.Text = "&Хулганаар зурах";
+            customizeToolStripMenuItem.Click += customizeToolStripMenuItem_Click;
             // 
             // optionsToolStripMenuItem
             // 
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(224, 26);
-            optionsToolStripMenuItem.Text = "&Options";
+            optionsToolStripMenuItem.Size = new Size(206, 26);
+            optionsToolStripMenuItem.Text = "&Тэгш өнцөгт";
+            optionsToolStripMenuItem.Click += optionsToolStripMenuItem_Click;
             // 
             // өнгөToolStripMenuItem
             // 
             өнгөToolStripMenuItem.Name = "өнгөToolStripMenuItem";
-            өнгөToolStripMenuItem.Size = new Size(224, 26);
+            өнгөToolStripMenuItem.Size = new Size(206, 26);
             өнгөToolStripMenuItem.Text = "Өнгө";
             өнгөToolStripMenuItem.Click += өнгөToolStripMenuItem_Click;
             // 
@@ -293,9 +295,9 @@
             // 
             toolStripComboBox1.Items.AddRange(new object[] { "1", "2", "3", "4", "5", "6" });
             toolStripComboBox1.Name = "toolStripComboBox1";
-            toolStripComboBox1.Size = new Size(121, 28);
+            toolStripComboBox1.Size = new Size(75, 28);
             toolStripComboBox1.Text = "Өргөн";
-            toolStripComboBox1.Click += toolStripComboBox1_Click_1;
+            toolStripComboBox1.SelectedIndexChanged += toolStripComboBox1_SelectedIndexChanged;
             // 
             // toolStrip1
             // 

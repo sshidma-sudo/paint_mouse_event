@@ -4,10 +4,13 @@ namespace mouse_event_paint
 {
     public partial class Form1 : Form
     {
-        Graphics g;
-        Pen p;
-        bool draw;       // хулганы товч дарагдсан эсэх
-        int x0, y0;      // заагчийн өмнөх байрлал
+        Shape[] shapes = new Shape[100];        // зурсан дүрсүүдийн массив
+        int count = 0;                          // массивт байгаа дүрсийн тоо
+        Shape current;                          // одоо зурж буй дүрс
+        string shapeType = "line";              // сонгосон дүрсийн төрөл
+        Color penColor = Color.Black;
+        float penWidth = 2;
+
         public Form1()
         {
             InitializeComponent();
@@ -15,63 +18,80 @@ namespace mouse_event_paint
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            g = this.CreateGraphics();
-            g.SmoothingMode = SmoothingMode.AntiAlias;   // ирмэгийг зөөллөнө
-            p = new Pen(Color.Black, 2);
-            p.StartCap = LineCap.Round;                  // зураас тасархай харагдахаас сэргийлнэ
-            p.EndCap = LineCap.Round;
-            draw = false;
-            //for (int i = 1; i <= 10; i++)
-            //  toolStripComboBox1.Items.Add(i);      // эхлээд нэмнэ
-            toolStripComboBox1.SelectedIndex = 0;      // дараа нь сонгоно
-            toolStripComboBox1.DropDownStyle = ComboBoxStyle.DropDownList; // гараар бичихийг хаана
+            this.DoubleBuffered = true;
+            toolStripComboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            toolStripComboBox1.SelectedIndex = 1;
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button != MouseButtons.Left) return;
+
+            switch (shapeType)
             {
-                draw = true;
-                x0 = e.X;
-                y0 = e.Y;
+                case "line": //дурсийг зурж эхлэх үед тухайн дүрсийн төрөлд тохирсон объект үүсгэнэ
+                    current = new LineDraw(penColor, penWidth, e.Location);
+                    break;
+                case "rect":
+                    current = new RectDraw(penColor, penWidth, e.Location);
+                    break;
+                    // шинэ дүрсүүдийг энд нэмнэ
             }
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (draw)
+            if (current != null)
             {
-                g.DrawLine(p, x0, y0, e.X, e.Y);
-                x0 = e.X;
-                y0 = e.Y;
+                current.End = e.Location;
+                this.Invalidate();      // Paint үзэгдлийг дуудна
             }
         }
 
         private void Form1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (draw) { draw = false; }
+            if (current != null)
+            {
+                current.End = e.Location;
+                if (count < shapes.Length)
+                    shapes[count++] = current;   // массивд нэмнэ
+                current = null;
+                this.Invalidate();
+            }
         }
 
-        private void toolStripTextBox1_Click(object sender, EventArgs e)
+        private void Form1_Paint(object sender, PaintEventArgs e)
         {
-
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            for (int i = 0; i < count; i++)
+                shapes[i].Draw(e.Graphics);
+            if (current != null)
+                current.Draw(e.Graphics);
         }
 
-        private void toolStripComboBox1_Click(object sender, EventArgs e)
+        // Tools → Шулуун
+        private void customizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            shapeType = "line";
         }
 
+        // Tools → Тэгш өнцөгт
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            shapeType = "rect";
+        }
+
+        // Tools → Өнгө
         private void өнгөToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)
-                p.Color = colorDialog1.Color;
-
+                penColor = colorDialog1.Color;
         }
 
-        private void toolStripComboBox1_Click_1(object sender, EventArgs e)
+        // Өргөн
+        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            p.Width = Convert.ToInt32(toolStripComboBox1.SelectedItem);
+            penWidth = Convert.ToInt32(toolStripComboBox1.SelectedItem);
         }
     }
 }
