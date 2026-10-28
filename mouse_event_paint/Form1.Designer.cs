@@ -73,7 +73,7 @@
             colorDialog1 = new ColorDialog();
             menuStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
-            SuspendLayout();
+           // SuspendLayout();
             // 
             // menuStrip1
             // 
