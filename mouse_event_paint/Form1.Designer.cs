@@ -436,7 +436,7 @@
         private ToolStripButton copyToolStripButton;
         private ToolStripButton pasteToolStripButton;
         private ToolStripSeparator toolStripSeparator7;
-        private ToolStripMenuItem өнгөToolStripMenuItem;
+        private ToolStripMenuItem өнгөToolStripMenuItem;po
         private ToolStripComboBox toolStripComboBox1;
         private ColorDialog colorDialog1;
     }
